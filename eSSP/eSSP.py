@@ -261,7 +261,7 @@ class eSSP(object):
         for events in self.poll.events:
             try:
                 if events.event == Status.DISABLED:
-                    pass # We don't print anything 
+                    pass # We don't print anything
                 else:
                     self.print_debug(Status(events.event))
 
@@ -341,9 +341,12 @@ class eSSP(object):
 
     def get_last_event(self):
         """Get the last event and delete it from the event list"""
-        event = self.events[len(self.events) - 1]
-        self.events.pop(len(self.events) - 1)
-        return event
+        # as of now, does not return the last event, but the oldest
+        # as well as None if there were no events
+        try:
+            return self.events.pop(0)
+        except IndexError:
+            return None
 
     def __action_helper(self, amount, currency, action, prefix):
         self.actions.put(action)
